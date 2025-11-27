@@ -1,1 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Christmas Tree</title>
+    <style>
+        :root {
+            --tree-color: #228B22;
+            --fire-color: #ff4500;
+            --fireplace-color: #5a3d2b;
+            --star-color: #FFD700;
+            --silver-color: #c0c0c0;
+        }
 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            min-height: 100vh;
+            background-color: #0b1a20; /* Dark night background */
+            margin: 0;
+            overflow: hidden;
+            perspective: 1000px; /* Enable 3D for magnetic effect */
+        }
+
+        /* --- Magnetic/Parallax Effect Container --- */
+        .scene-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; /* Smooth movement */
+        }
+
+        /* --- Fireplace (Background/Depth 1) --- */
+        .fireplace {
+            width: 300px;
+            height: 250px;
+            background-color: var(--fireplace-color);
+            border: 10px solid #3d2b1e;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateZ(-50px) translateX(-250px); /* Pushed back */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .fireplace-opening {
+            width: 80%;
+            height: 70%;
+            background-color: #1a0f07;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .fire {
+            width: 90%;
+            height: 90%;
+            background: radial-gradient(ellipse at center, rgba(255, 165, 0, 0.9) 0%, var(--fire-color) 70%, rgba(255, 0, 0, 0.7) 100%);
+            border-radius: 50% 50% 0 0;
+            filter: blur(8px) brightness(1.2);
+            animation: fire-animation 2s infinite alternate;
+            position: absolute;
+            bottom: 0;
+        }
+
+        @keyframes fire-animation {
+            0% { transform: scale(0.95, 0.85); opacity: 0.8; }
+            100% { transform: scale(1.05, 1.0); opacity: 1; }
+        }
+
+        /* --- Tree Container (Main Focus/Depth 2) --- */
+        .tree-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateZ(0) translateX(150px); /* Neutral depth */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .tree-pole {
+            width: 40px;
+            height: 100px;
+            background-color: #8B4513;
+            position: relative;
+            top: 0;
+            z-index: 0;
+        }
+
+        .branch {
+            width: 0;
+            height: 0;
+            position: relative;
+            margin-bottom: -40px;
+            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
+        }
+
+        .branch-1 { border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 120px solid var(--tree-color); z-index: 3; }
+        .branch-2 { border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 150px solid var(--tree-color); z-index: 2; }
+        .branch-3 { border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--tree-color); z-index: 1; }
+
+        /* --- Angel (Foreground/Depth 3) --- */
+        .angel {
+            position: absolute;
+            top: -160px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--star-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--star-color);
+            z-index: 10;
+            animation: angel-pulse 2s infinite alternate;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        @keyframes angel-pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        /* --- Garlands (Wavy line & Blinking) --- */
+        .garland {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .wavy-garland {
+            position: absolute;
+            width: 90%;
+            height: 30px;
+            border-radius: 50%;
+            border-bottom: 3px dashed;
+            margin: 0 5%;
+            animation: garland-color 4s infinite;
+        }
+
+        .branch-1 .wavy-garland { top: 60px; border-radius: 0 0 50% 50% / 0 0 20px 20px; }
+        .branch-2 .wavy-garland { top: 75px; width: 80%; margin: 0 10%; border-radius: 0 0 60% 60% / 0 0 30px 30px; }
+        .branch-3 .wavy-garland { top: 90px; width: 70%; margin: 0 15%; border-radius: 0 0 70% 70% / 0 0 40px 40px; }
+
+        @keyframes garland-color {
+            0% { border-color: red; box-shadow: 0 0 10px red; }
+            25% { border-color: blue; box-shadow: 0 0 10px blue; }
+            50% { border-color: yellow; box-shadow: 0 0 10px yellow; }
+            75% { border-color: cyan; box-shadow: 0 0 10px cyan; }
+            100% { border-color: red; box-shadow: 0 0 10px red; }
+        }
+
+        /* --- Ornaments (Silver Balls) --- */
+        .ornament {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--silver-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px white, inset 0 0 5px var(--silver-color);
+            animation: ornament-glow 2s infinite alternate;
+            z-index: 5;
+        }
+
+        .branch-1 .ornament:nth-child(1) { top: 70px; left: 10px; }
+        .branch-1 .ornament:nth-child(2) { top: 40px; right: 15px; }
+        .branch-2 .ornament:nth-child(3) { top: 90px; left: 20px; }
+        .branch-2 .ornament:nth-child(4) { top: 60px; right: 30px; }
+        .branch-3 .ornament:nth-child(5) { top: 110px; left: 40px; }
+        .branch-3 .ornament:nth-child(6) { top: 70px; right: 50px; }
+
+        @keyframes ornament-glow {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* --- Gifts (Foreground/Depth 3) --- */
+        .present {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #5d4037;
+            z-index: 15;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            transform: translateZ(50px) rotate(0deg); /* Pushed forward */
+        }
+
+        .present-bow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 40%, gold 40%, gold 60%, transparent 60%),
+                        linear-gradient(0deg, transparent 40%, gold 40%, gold 60%, transparent 60%);
+        }
+
+        .present-1 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-300px) rotate(-8deg); background-color: #e74c3c; } /* Red */
+        .present-2 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-230px) rotate(12deg); background-color: #2ecc71; } /* Emerald */
+        .present-3 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-160px) rotate(-5deg); background-color: #3498db; } /* Blue */
+        .present-4 { bottom: 80px; left: 50%; transform: translateZ(50px) translateX(-190px) rotate(20deg); background-color: #f1c40f; } /* Yellow */
+        .present-5 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-90px) rotate(-15deg); background-color: #9b59b6; } /* Purple */
+
+        /* --- Mobile Adaptivity --- */
+        @media (max-width: 768px) {
+            .fireplace {
+                transform: translateZ(-50px) translateX(-180px);
+                width: 250px;
+                height: 200px;
+            }
+            .tree-container {
+                transform: translateZ(0) translateX(120px) scale(0.8);
+            }
+            .present-1 { transform: translateZ(50px) translateX(-220px) rotate(-8deg); }
+            .present-2 { transform: translateZ(50px) translateX(-150px) rotate(12deg); }
+            .present-3 { transform: translateZ(50px) translateX(-80px) rotate(-5deg); }
+            .present-4 { bottom: 60px; transform: translateZ(50px) translateX(-110px) rotate(20deg); }
+            .present-5 { display: none; /* Hiding one present on small screens to save space */ }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene-container">
+        <div class="fireplace">
+            <div class="fireplace-opening">
+                <div class="fire"></div>
+            </div>
+        </div>
+
+        <div class="tree-container">
+            <div class="angel">⭐</div>
+            <div class="branch branch-1">
+                <div class="wavy-garland"></div>
+                <div class="ornament"></div>
+                <div class="ornament"></div>
+            </div>
+            <div class="branch branch-2">
+                <div class="wavy-garland"></div>
+                <div class="ornament"></div>
+                <div class="ornament"></div>
+            </div>
+            <div class="branch branch-3">
+                <div class="wavy-garland"></div>
+                <div class="ornament"></div>
+                <div class="ornament"></div>
+            </div>
+            <div class="tree-pole"></div>
+        </div>
+
+        <div class="present present-1"><div class="present-bow"></div></div>
+        <div class="present present-2"><div class="present-bow"></div></div>
+        <div class="present present-3"><div class="present-bow"></div></div>
+        <div class="present present-4"><div class="present-bow"></div></div>
+        <div class="present present-5"><div class="present-bow"></div></div>
+
+    </div>
+
+    <script>
+        const scene = document.querySelector('.scene-container');
+
+        // Function to handle the magnetic (parallax) effect
+        function handleParallax(event) {
+            // Get position of mouse or first touch point
+            let x = 0;
+            let y = 0;
+
+            if (event.type.startsWith('touch')) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            } else {
+                x = event.clientX;
+                y = event.clientY;
+            }
+
+            // Calculate center of the screen
+            const midX = window.innerWidth / 2;
+            const midY = window.innerHeight / 2;
+
+            // Calculate rotation values (Max rotation set to 5 degrees)
+            // Smaller 'dampening' factor (e.g., 50) means more aggressive movement
+            const dampening = 80;
+            const rotateY = (x - midX) / dampening; // Tilt scene left/right
+            const rotateX = (y - midY) / dampening; // Tilt scene up/down
+
+            // Apply 3D transform to the scene container
+            scene.style.transform = `rotateX(${rotateX}deg) rotateY(${-rotateY}deg)`;
+        }
+
+        // Attach event listeners for mouse and touch (mobile-friendly)
+        document.addEventListener('mousemove', handleParallax);
+        document.addEventListener('touchmove', handleParallax);
+    </script>
+</body>
+</html>
