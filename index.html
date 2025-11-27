@@ -215,21 +215,62 @@
         .present-4 { bottom: 80px; left: 50%; transform: translateZ(50px) translateX(-190px) rotate(20deg); background-color: #f1c40f; } /* Yellow */
         .present-5 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-90px) rotate(-15deg); background-color: #9b59b6; } /* Purple */
 
-        /* --- Mobile Adaptivity --- */
+        /* --- MOBILE LAYOUT FIXES (MAX 768px) --- */
         @media (max-width: 768px) {
+            /* General adjustments for smaller screens */
+            .scene-container {
+                align-items: center; /* Center vertically on mobile */
+                height: 90vh;
+            }
+
+            /* 1. Fireplace adjustment (Move closer to center-left) */
             .fireplace {
-                transform: translateZ(-50px) translateX(-180px);
+                transform: translateZ(-50px) translateX(-120px) scale(0.8);
                 width: 250px;
                 height: 200px;
+                bottom: 50px; /* Lift slightly */
             }
+
+            /* 2. Tree adjustment (Move closer to center-right and scale down) */
             .tree-container {
-                transform: translateZ(0) translateX(120px) scale(0.8);
+                transform: translateZ(0) translateX(120px) scale(0.65);
+                bottom: 40px;
             }
-            .present-1 { transform: translateZ(50px) translateX(-220px) rotate(-8deg); }
-            .present-2 { transform: translateZ(50px) translateX(-150px) rotate(12deg); }
-            .present-3 { transform: translateZ(50px) translateX(-80px) rotate(-5deg); }
-            .present-4 { bottom: 60px; transform: translateZ(50px) translateX(-110px) rotate(20deg); }
-            .present-5 { display: none; /* Hiding one present on small screens to save space */ }
+
+            /* 3. Gifts repositioning (Stacked more closely under the tree/beside fireplace) */
+            .present {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                /* Resetting left position to 50% and adjusting X translation for stacking */
+                left: 50%;
+                transform: translateZ(50px) translateX(0) rotate(0deg);
+            }
+
+            .present-1 {
+                transform: translateZ(50px) translateX(-180px) rotate(-8deg); /* Near fireplace */
+            }
+            .present-2 {
+                transform: translateZ(50px) translateX(-115px) rotate(12deg);
+            }
+            .present-3 {
+                transform: translateZ(50px) translateX(-50px) rotate(-5deg);
+            }
+            .present-4 {
+                transform: translateZ(50px) translateX(15px) rotate(20deg);
+                bottom: 80px; /* Stacked */
+                width: 45px;
+                height: 45px;
+            }
+            .present-5 {
+                transform: translateZ(50px) translateX(80px) rotate(-15deg);
+                bottom: 20px;
+            }
+
+            /* Adjust tree parts due to scale */
+            .angel {
+                top: -160px; /* Keep consistent relative position */
+            }
         }
     </style>
 </head>
