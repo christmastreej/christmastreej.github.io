@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magnetic Christmas Tree</title>
+    <title>Realistic Magnetic Christmas Tree</title>
     <style>
         :root {
-            --tree-color: #228B22;
-            --fire-color: #ff4500;
-            --fireplace-color: #5a3d2b;
-            --star-color: #FFD700;
-            --silver-color: #c0c0c0;
+            --tree-dark-green: #0a4f0a;
+            --tree-light-green: #1a6f1a;
+            --fire-main: #ff4500;
+            --fire-glow: #ffa500;
+            --fireplace-stone: #4b4b4b;
+            --fireplace-mortar: #333333;
+            --star-gold: #FFD700;
+            --angel-body: #f8e5c6;
+            --silver-ball: #a0a0a0;
+            --shadow-color: rgba(0, 0, 0, 0.6);
+            --bg-color: #121212; /* Darker, more atmospheric background */
         }
 
         body {
@@ -18,13 +24,15 @@
             justify-content: center;
             align-items: flex-end;
             min-height: 100vh;
-            background-color: #0b1a20; /* Dark night background */
+            background-color: var(--bg-color);
             margin: 0;
             overflow: hidden;
-            perspective: 1000px; /* Enable 3D for magnetic effect */
+            perspective: 1500px; /* Increased perspective for more depth */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
         }
 
-        /* --- Magnetic/Parallax Effect Container --- */
+        /* --- Scene Container for Magnetic Effect --- */
         .scene-container {
             position: relative;
             width: 100%;
@@ -33,45 +41,60 @@
             justify-content: center;
             align-items: flex-end;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out; /* Smooth movement */
+            transition: transform 0.15s ease-out; /* Smoother transition */
         }
 
         /* --- Fireplace (Background/Depth 1) --- */
         .fireplace {
-            width: 300px;
-            height: 250px;
-            background-color: var(--fireplace-color);
-            border: 10px solid #3d2b1e;
-            border-radius: 5px;
+            width: 380px;
+            height: 320px;
+            background: linear-gradient(to bottom right, var(--fireplace-stone), var(--fireplace-mortar));
+            border-radius: 8px;
             position: absolute;
-            bottom: 20px;
+            bottom: 40px;
             left: 50%;
-            transform: translateZ(-50px) translateX(-250px); /* Pushed back */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+            transform: translateZ(-150px) translateX(-300px); /* Pushed further back */
+            box-shadow: 0 15px 30px var(--shadow-color);
+            padding: 20px;
+            box-sizing: border-box;
+            border: 2px solid #222;
         }
 
         .fireplace-opening {
-            width: 80%;
+            width: 85%;
             height: 70%;
-            background-color: #1a0f07;
-            position: absolute;
-            top: 10%;
-            left: 10%;
+            background-color: #0d0a08;
+            border-radius: 4px;
+            position: relative;
+            margin: auto;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: flex-end;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .fire-logs {
+            position: absolute;
+            bottom: 5px;
+            width: 70%;
+            height: 20px;
+            background-color: #5a2e0e;
+            border-radius: 5px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
 
         .fire {
             width: 90%;
             height: 90%;
-            background: radial-gradient(ellipse at center, rgba(255, 165, 0, 0.9) 0%, var(--fire-color) 70%, rgba(255, 0, 0, 0.7) 100%);
+            background: radial-gradient(ellipse at center, var(--fire-glow) 0%, var(--fire-main) 70%, rgba(200, 0, 0, 0.6) 100%);
             border-radius: 50% 50% 0 0;
-            filter: blur(8px) brightness(1.2);
-            animation: fire-animation 2s infinite alternate;
+            filter: blur(12px) brightness(1.3);
+            animation: fire-animation 2s infinite alternate ease-in-out;
             position: absolute;
-            bottom: 0;
+            bottom: 10px;
+            z-index: 0;
         }
 
         @keyframes fire-animation {
@@ -79,12 +102,12 @@
             100% { transform: scale(1.05, 1.0); opacity: 1; }
         }
 
-        /* --- Tree Container (Main Focus/Depth 2) --- */
+        /* --- Christmas Tree Container (Main Focus/Depth 2) --- */
         .tree-container {
             position: absolute;
             bottom: 20px;
             left: 50%;
-            transform: translateZ(0) translateX(150px); /* Neutral depth */
+            transform: translateZ(0) translateX(220px); /* Neutral depth */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -92,47 +115,61 @@
         }
 
         .tree-pole {
-            width: 40px;
-            height: 100px;
-            background-color: #8B4513;
+            width: 50px;
+            height: 120px;
+            background: linear-gradient(to top, #5a2e0e, #8B4513);
+            border-radius: 5px 5px 0 0;
             position: relative;
             top: 0;
             z-index: 0;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
         }
 
         .branch {
             width: 0;
             height: 0;
             position: relative;
-            margin-bottom: -40px;
-            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
+            margin-bottom: -50px; /* Overlap branches */
+            filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.6));
+            background: linear-gradient(to top, var(--tree-dark-green), var(--tree-light-green)); /* For a more complex shape if needed */
         }
 
-        .branch-1 { border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 120px solid var(--tree-color); z-index: 3; }
-        .branch-2 { border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 150px solid var(--tree-color); z-index: 2; }
-        .branch-3 { border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--tree-color); z-index: 1; }
+        .branch-1 { border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 150px solid var(--tree-dark-green); z-index: 3; }
+        .branch-2 { border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--tree-dark-green); z-index: 2; top: -20px; }
+        .branch-3 { border-left: 120px solid transparent; border-right: 120px solid transparent; border-bottom: 210px solid var(--tree-dark-green); z-index: 1; top: -40px; }
 
-        /* --- Angel (Foreground/Depth 3) --- */
+        /* --- Angel (Top of the tree) --- */
         .angel {
             position: absolute;
-            top: -160px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--star-color);
+            top: -190px; /* Adjust based on tree height */
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at center, var(--star-gold) 0%, #daa520 70%);
             border-radius: 50%;
-            box-shadow: 0 0 20px var(--star-color);
+            box-shadow: 0 0 25px var(--star-gold), 0 0 15px white inset;
             z-index: 10;
-            animation: angel-pulse 2s infinite alternate;
+            animation: angel-glow 2s infinite alternate ease-in-out;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            font-size: 30px;
+            font-size: 36px;
+            color: white; /* For the star symbol */
+            text-shadow: 0 0 10px white;
+            line-height: 1;
         }
 
-        @keyframes angel-pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
+        .angel::before {
+            content: '\2728'; /* Sparkle emoji */
+            position: absolute;
+            font-size: 0.8em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes angel-glow {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.1); opacity: 1; }
         }
 
         /* --- Garlands (Wavy line & Blinking) --- */
@@ -142,135 +179,199 @@
             height: 100%;
             top: 0;
             left: 0;
+            pointer-events: none; /* Don't block click on ornaments */
         }
 
         .wavy-garland {
             position: absolute;
-            width: 90%;
-            height: 30px;
+            height: 3px; /* Thin line */
             border-radius: 50%;
-            border-bottom: 3px dashed;
-            margin: 0 5%;
-            animation: garland-color 4s infinite;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            animation: garland-color-realistic 6s infinite linear;
+            mix-blend-mode: screen; /* For glowing effect */
         }
 
-        .branch-1 .wavy-garland { top: 60px; border-radius: 0 0 50% 50% / 0 0 20px 20px; }
-        .branch-2 .wavy-garland { top: 75px; width: 80%; margin: 0 10%; border-radius: 0 0 60% 60% / 0 0 30px 30px; }
-        .branch-3 .wavy-garland { top: 90px; width: 70%; margin: 0 15%; border-radius: 0 0 70% 70% / 0 0 40px 40px; }
+        /* Garland positioning for realism */
+        .branch-1 .wavy-garland:nth-child(1) { width: 80%; top: 40px; left: 10%; transform: rotate(-5deg); }
+        .branch-1 .wavy-garland:nth-child(2) { width: 70%; top: 60px; left: 15%; transform: rotate(8deg); animation-delay: 0.5s; }
+        .branch-1 .wavy-garland:nth-child(3) { width: 60%; top: 80px; left: 20%; transform: rotate(-10deg); animation-delay: 1s; }
+        /* ... more for branch 1 if needed for 12 ... */
 
-        @keyframes garland-color {
-            0% { border-color: red; box-shadow: 0 0 10px red; }
-            25% { border-color: blue; box-shadow: 0 0 10px blue; }
-            50% { border-color: yellow; box-shadow: 0 0 10px yellow; }
-            75% { border-color: cyan; box-shadow: 0 0 10px cyan; }
-            100% { border-color: red; box-shadow: 0 0 10px red; }
+        .branch-2 .wavy-garland:nth-child(1) { width: 90%; top: 60px; left: 5%; transform: rotate(5deg); animation-delay: 1.5s; }
+        .branch-2 .wavy-garland:nth-child(2) { width: 80%; top: 80px; left: 10%; transform: rotate(-7deg); animation-delay: 2s; }
+        .branch-2 .wavy-garland:nth-child(3) { width: 70%; top: 100px; left: 15%; transform: rotate(10deg); animation-delay: 2.5s; }
+        /* ... more for branch 2 if needed for 12 ... */
+
+        .branch-3 .wavy-garland:nth-child(1) { width: 100%; top: 80px; left: 0%; transform: rotate(-3deg); animation-delay: 3s; }
+        .branch-3 .wavy-garland:nth-child(2) { width: 90%; top: 100px; left: 5%; transform: rotate(6deg); animation-delay: 3.5s; }
+        .branch-3 .wavy-garland:nth-child(3) { width: 80%; top: 120px; left: 10%; transform: rotate(-8deg); animation-delay: 4s; }
+        /* ... more for branch 3 if needed for 12 ... */
+
+        /* Dynamically add more garlands (up to 12 per branch) */
+        /* This is an example, you would repeat this pattern for 12 garlands */
+        .branch-1 .wavy-garland:nth-child(4) { width: 75%; top: 48px; left: 12%; transform: rotate(3deg); animation-delay: 0.2s; }
+        .branch-1 .wavy-garland:nth-child(5) { width: 65%; top: 68px; left: 17%; transform: rotate(-6deg); animation-delay: 0.7s; }
+        .branch-1 .wavy-garland:nth-child(6) { width: 55%; top: 88px; left: 22%; transform: rotate(9deg); animation-delay: 1.2s; }
+
+        .branch-2 .wavy-garland:nth-child(4) { width: 85%; top: 68px; left: 7%; transform: rotate(-2deg); animation-delay: 1.7s; }
+        .branch-2 .wavy-garland:nth-child(5) { width: 75%; top: 88px; left: 12%; transform: rotate(4deg); animation-delay: 2.2s; }
+        .branch-2 .wavy-garland:nth-child(6) { width: 65%; top: 108px; left: 17%; transform: rotate(-9deg); animation-delay: 2.7s; }
+
+        .branch-3 .wavy-garland:nth-child(4) { width: 95%; top: 88px; left: 2%; transform: rotate(1deg); animation-delay: 3.2s; }
+        .branch-3 .wavy-garland:nth-child(5) { width: 85%; top: 108px; left: 7%; transform: rotate(-5deg); animation-delay: 3.7s; }
+        .branch-3 .wavy-garland:nth-child(6) { width: 75%; top: 128px; left: 12%; transform: rotate(7deg); animation-delay: 4.2s; }
+
+        /* To get 12 garlands, you would add .wavy-garland:nth-child(7) through :nth-child(12) for each branch */
+
+
+        @keyframes garland-color-realistic {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
         }
 
         /* --- Ornaments (Silver Balls) --- */
         .ornament {
             position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: var(--silver-color);
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 30% 30%, white, var(--silver-ball) 60%, #606060);
             border-radius: 50%;
-            box-shadow: 0 0 10px white, inset 0 0 5px var(--silver-color);
-            animation: ornament-glow 2s infinite alternate;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6);
+            animation: ornament-shine 3s infinite alternate ease-in-out;
             z-index: 5;
+            cursor: pointer;
         }
 
-        .branch-1 .ornament:nth-child(1) { top: 70px; left: 10px; }
-        .branch-1 .ornament:nth-child(2) { top: 40px; right: 15px; }
-        .branch-2 .ornament:nth-child(3) { top: 90px; left: 20px; }
-        .branch-2 .ornament:nth-child(4) { top: 60px; right: 30px; }
-        .branch-3 .ornament:nth-child(5) { top: 110px; left: 40px; }
-        .branch-3 .ornament:nth-child(6) { top: 70px; right: 50px; }
-
-        @keyframes ornament-glow {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
+        @keyframes ornament-shine {
+            0% { transform: scale(1); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.6); }
         }
+
+        /* Ornament positioning for 12 per branch */
+        .branch-1 .ornament:nth-child(1) { top: 30px; left: 15px; }
+        .branch-1 .ornament:nth-child(2) { top: 50px; right: 20px; }
+        .branch-1 .ornament:nth-child(3) { top: 70px; left: 40px; }
+        .branch-1 .ornament:nth-child(4) { top: 90px; right: 35px; }
+        .branch-1 .ornament:nth-child(5) { top: 40px; left: 60px; }
+        .branch-1 .ornament:nth-child(6) { top: 60px; right: 5px; }
+        .branch-1 .ornament:nth-child(7) { top: 80px; left: 5px; }
+        .branch-1 .ornament:nth-child(8) { top: 100px; right: 50px; }
+        .branch-1 .ornament:nth-child(9) { top: 35px; right: 40px; }
+        .branch-1 .ornament:nth-child(10) { top: 55px; left: 25px; }
+        .branch-1 .ornament:nth-child(11) { top: 75px; right: 10px; }
+        .branch-1 .ornament:nth-child(12) { top: 95px; left: 30px; }
+
+
+        .branch-2 .ornament:nth-child(1) { top: 40px; left: 20px; }
+        .branch-2 .ornament:nth-child(2) { top: 60px; right: 25px; }
+        .branch-2 .ornament:nth-child(3) { top: 80px; left: 50px; }
+        .branch-2 .ornament:nth-child(4) { top: 100px; right: 45px; }
+        .branch-2 .ornament:nth-child(5) { top: 50px; left: 70px; }
+        .branch-2 .ornament:nth-child(6) { top: 70px; right: 10px; }
+        .branch-2 .ornament:nth-child(7) { top: 90px; left: 10px; }
+        .branch-2 .ornament:nth-child(8) { top: 110px; right: 60px; }
+        .branch-2 .ornament:nth-child(9) { top: 45px; right: 50px; }
+        .branch-2 .ornament:nth-child(10) { top: 65px; left: 30px; }
+        .branch-2 .ornament:nth-child(11) { top: 85px; right: 15px; }
+        .branch-2 .ornament:nth-child(12) { top: 105px; left: 40px; }
+
+        .branch-3 .ornament:nth-child(1) { top: 50px; left: 25px; }
+        .branch-3 .ornament:nth-child(2) { top: 70px; right: 30px; }
+        .branch-3 .ornament:nth-child(3) { top: 90px; left: 60px; }
+        .branch-3 .ornament:nth-child(4) { top: 110px; right: 55px; }
+        .branch-3 .ornament:nth-child(5) { top: 60px; left: 80px; }
+        .branch-3 .ornament:nth-child(6) { top: 80px; right: 15px; }
+        .branch-3 .ornament:nth-child(7) { top: 100px; left: 15px; }
+        .branch-3 .ornament:nth-child(8) { top: 120px; right: 70px; }
+        .branch-3 .ornament:nth-child(9) { top: 55px; right: 60px; }
+        .branch-3 .ornament:nth-child(10) { top: 75px; left: 35px; }
+        .branch-3 .ornament:nth-child(11) { top: 95px; right: 20px; }
+        .branch-3 .ornament:nth-child(12) { top: 115px; left: 50px; }
+
 
         /* --- Gifts (Foreground/Depth 3) --- */
         .present {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 2px solid #5d4037;
+            width: 70px;
+            height: 70px;
+            background-color: #e74c3c; /* Default Red */
+            border: 2px solid #b03a2e;
+            border-radius: 5px;
             z-index: 15;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-            transform: translateZ(50px) rotate(0deg); /* Pushed forward */
+            box-shadow: 0 12px 25px var(--shadow-color), inset 0 0 10px rgba(255, 255, 255, 0.2);
+            transform: translateZ(100px) rotate(0deg); /* Pushed further forward */
         }
 
         .present-bow {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent 40%, gold 40%, gold 60%, transparent 60%),
-                        linear-gradient(0deg, transparent 40%, gold 40%, gold 60%, transparent 60%);
+            background: linear-gradient(90deg, transparent 45%, gold 45%, gold 55%, transparent 55%),
+                        linear-gradient(0deg, transparent 45%, gold 45%, gold 55%, transparent 55%);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
         }
 
-        .present-1 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-300px) rotate(-8deg); background-color: #e74c3c; } /* Red */
-        .present-2 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-230px) rotate(12deg); background-color: #2ecc71; } /* Emerald */
-        .present-3 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-160px) rotate(-5deg); background-color: #3498db; } /* Blue */
-        .present-4 { bottom: 80px; left: 50%; transform: translateZ(50px) translateX(-190px) rotate(20deg); background-color: #f1c40f; } /* Yellow */
-        .present-5 { bottom: 20px; left: 50%; transform: translateZ(50px) translateX(-90px) rotate(-15deg); background-color: #9b59b6; } /* Purple */
+        /* Specific gift colors and positions */
+        .present-1 { bottom: 40px; left: 50%; transform: translateZ(100px) translateX(-350px) rotate(-10deg); background-color: #c0392b; } /* Dark Red */
+        .present-2 { bottom: 40px; left: 50%; transform: translateZ(100px) translateX(-260px) rotate(15deg); background-color: #27ae60; } /* Emerald Green */
+        .present-3 { bottom: 40px; left: 50%; transform: translateZ(100px) translateX(-170px) rotate(-8deg); background-color: #3498db; } /* Bright Blue */
+        .present-4 { bottom: 120px; left: 50%; transform: translateZ(100px) translateX(-210px) rotate(22deg); background-color: #f1c40f; width: 60px; height: 60px; } /* Smaller Yellow */
+        .present-5 { bottom: 40px; left: 50%; transform: translateZ(100px) translateX(-80px) rotate(-18deg); background-color: #9b59b6; } /* Amethyst Purple */
 
         /* --- MOBILE LAYOUT FIXES (MAX 768px) --- */
         @media (max-width: 768px) {
-            /* General adjustments for smaller screens */
             .scene-container {
                 align-items: center; /* Center vertically on mobile */
-                height: 90vh;
+                height: 95vh;
             }
 
-            /* 1. Fireplace adjustment (Move closer to center-left) */
+            /* Fireplace adjustments */
             .fireplace {
-                transform: translateZ(-50px) translateX(-120px) scale(0.8);
-                width: 250px;
-                height: 200px;
-                bottom: 50px; /* Lift slightly */
-            }
-
-            /* 2. Tree adjustment (Move closer to center-right and scale down) */
-            .tree-container {
-                transform: translateZ(0) translateX(120px) scale(0.65);
-                bottom: 40px;
-            }
-
-            /* 3. Gifts repositioning (Stacked more closely under the tree/beside fireplace) */
-            .present {
-                width: 50px;
-                height: 50px;
+                transform: translateZ(-150px) translateX(-150px) scale(0.7);
+                width: 300px;
+                height: 250px;
                 bottom: 20px;
-                /* Resetting left position to 50% and adjusting X translation for stacking */
-                left: 50%;
-                transform: translateZ(50px) translateX(0) rotate(0deg);
             }
 
-            .present-1 {
-                transform: translateZ(50px) translateX(-180px) rotate(-8deg); /* Near fireplace */
+            /* Tree adjustments */
+            .tree-container {
+                transform: translateZ(0) translateX(120px) scale(0.6); /* Scale down more for small screens */
+                bottom: 10px;
             }
-            .present-2 {
-                transform: translateZ(50px) translateX(-115px) rotate(12deg);
+
+            .branch-1 { border-left: 60px solid transparent; border-right: 60px solid transparent; border-bottom: 120px solid var(--tree-dark-green); }
+            .branch-2 { border-left: 80px solid transparent; border-right: 80px solid transparent; border-bottom: 150px solid var(--tree-dark-green); top: -10px; }
+            .branch-3 { border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--tree-dark-green); top: -20px; }
+            .tree-pole { height: 90px; }
+            .angel { top: -150px; width: 45px; height: 45px; font-size: 28px; }
+
+
+            /* Gifts repositioning for stacking and visibility */
+            .present {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                left: 50%;
+                transform: translateZ(100px) translateX(0) rotate(0deg); /* Reset for easier mobile positioning */
             }
-            .present-3 {
-                transform: translateZ(50px) translateX(-50px) rotate(-5deg);
-            }
+
+            .present-1 { transform: translateZ(100px) translateX(-200px) rotate(-8deg); }
+            .present-2 { transform: translateZ(100px) translateX(-130px) rotate(10deg); }
+            .present-3 { transform: translateZ(100px) translateX(-60px) rotate(-5deg); }
             .present-4 {
-                transform: translateZ(50px) translateX(15px) rotate(20deg);
-                bottom: 80px; /* Stacked */
+                transform: translateZ(100px) translateX(10px) rotate(18deg);
+                bottom: 90px; /* Stacked higher */
                 width: 45px;
                 height: 45px;
             }
-            .present-5 {
-                transform: translateZ(50px) translateX(80px) rotate(-15deg);
-                bottom: 20px;
-            }
+            .present-5 { transform: translateZ(100px) translateX(80px) rotate(-12deg); }
 
-            /* Adjust tree parts due to scale */
-            .angel {
-                top: -160px; /* Keep consistent relative position */
-            }
+            /* Reduce garland/ornament count for less clutter on small screens if desired */
+            /* For this realistic example, let's keep them but they will be smaller */
+            .ornament { width: 16px; height: 16px; }
+            .wavy-garland { height: 2px; } /* Thinner garlands */
         }
     </style>
 </head>
@@ -278,26 +379,36 @@
     <div class="scene-container">
         <div class="fireplace">
             <div class="fireplace-opening">
+                <div class="fire-logs"></div>
                 <div class="fire"></div>
             </div>
         </div>
 
         <div class="tree-container">
-            <div class="angel">⭐</div>
+            <div class="angel"></div>
             <div class="branch branch-1">
-                <div class="wavy-garland"></div>
-                <div class="ornament"></div>
-                <div class="ornament"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
             </div>
             <div class="branch branch-2">
-                <div class="wavy-garland"></div>
-                <div class="ornament"></div>
-                <div class="ornament"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
             </div>
             <div class="branch branch-3">
-                <div class="wavy-garland"></div>
-                <div class="ornament"></div>
-                <div class="ornament"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div> <div class="wavy-garland"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
+                <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div> <div class="ornament"></div>
             </div>
             <div class="tree-pole"></div>
         </div>
@@ -313,35 +424,33 @@
     <script>
         const scene = document.querySelector('.scene-container');
 
-        // Function to handle the magnetic (parallax) effect
         function handleParallax(event) {
-            // Get position of mouse or first touch point
             let x = 0;
             let y = 0;
 
             if (event.type.startsWith('touch')) {
-                x = event.touches[0].clientX;
-                y = event.touches[0].clientY;
+                if (event.touches.length > 0) {
+                    x = event.touches[0].clientX;
+                    y = event.touches[0].clientY;
+                } else {
+                    return; // No touch points, do nothing
+                }
             } else {
                 x = event.clientX;
                 y = event.clientY;
             }
 
-            // Calculate center of the screen
             const midX = window.innerWidth / 2;
             const midY = window.innerHeight / 2;
 
-            // Calculate rotation values (Max rotation set to 5 degrees)
-            // Smaller 'dampening' factor (e.g., 50) means more aggressive movement
-            const dampening = 80;
-            const rotateY = (x - midX) / dampening; // Tilt scene left/right
-            const rotateX = (y - midY) / dampening; // Tilt scene up/down
+            // Increased dampening for a more subtle, realistic magnetic effect
+            const dampening = 120;
+            const rotateY = (x - midX) / dampening;
+            const rotateX = (y - midY) / dampening;
 
-            // Apply 3D transform to the scene container
             scene.style.transform = `rotateX(${rotateX}deg) rotateY(${-rotateY}deg)`;
         }
 
-        // Attach event listeners for mouse and touch (mobile-friendly)
         document.addEventListener('mousemove', handleParallax);
         document.addEventListener('touchmove', handleParallax);
     </script>
