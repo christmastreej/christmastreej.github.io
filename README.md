@@ -94,7 +94,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 **Project:** [github.com/ChristmasTreej/ChristmasTreej.github.io](https://github.com/ChristmasTreej/ChristmasTreej.github.io)
 
-**Live Demo:** [christmastreej.github.io](https://christmastreej.github.io)
+**Live Demo:** [ChristmasTreej.github.io](https://ChristmasTreej.github.io)
 
 ---
 
