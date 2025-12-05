@@ -30,7 +30,7 @@
 ## 🚀 Quick Start
 
 ### Option 1: Visit Online
-👉 **[christmastreej.github.io](https://christmastreej.github.io)**
+👉 **[ChristmasTreej.github.io](https://christmastreej.github.io)**
 
 ### Option 2: Run Locally
 ```bash
