@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-family-names: "Kolesnikova"
-given-names: "Yuliya"
-orcid: "https://orcid.org/0009-0000-6151-7415"
+- family-names: "Kolesnikova"
+  given-names: "Yuliya"
+  orcid: "https://orcid.org/0009-0000-6151-7415"
 title: "Interactive Christmas Tree"
 version: 1.0
-https://doi.org/10.5281/zenodo.17830199
+doi: 10.5281/zenodo.17830199
 date-released: 2025-12-05
 url: "https://github.com/christmastreej/christmastreej.github.io"
 license: MIT
